@@ -14,6 +14,6 @@ You can use it for custom views like:
 
     def some_proxy_view(request):
         filename = 'myfile.wav'
-        response = RangedFileResponse(open(filename, 'r'), request, content_type='audio/wav')
+        response = RangedFileResponse(request, open(filename, 'r'), content_type='audio/wav')
         response['Content-Disposition'] = 'attachment; filename="%s"' % filename
         return response
