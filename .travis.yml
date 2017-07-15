@@ -1,0 +1,21 @@
+sudo: false
+dist: trusty
+language: python
+python:
+- '3.4'
+- '3.5'
+env:
+- TOX_ENV=tan1uan5
+- TOX_ENV=flake8
+install:
+- pip install tox
+- pip install python-coveralls
+branches:
+  only:
+  - master
+  - /\d+\.\d+\.\d+/
+script:
+- tox -e $TOX_ENV
+after_success:
+- coverage report
+- coveralls
