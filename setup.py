@@ -7,5 +7,5 @@ setup(name='django-ranged-fileresponse',
       author='Spindle',
       author_email='jeroen@wearespindle.com',
       license='MIT',
-      packages=['ranged_fileresponse'],
+      packages=['django'],
       zip_safe=False)
