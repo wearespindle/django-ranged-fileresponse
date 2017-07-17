@@ -40,9 +40,9 @@ class RangedFileReader(object):
 
     def parse_range_header(self, header, resource_size):
         """
-        Parses a range header into a list of two-tuples (start, stop) where `start`
-        is the starting byte of the range (inclusive) and `stop` is the ending byte
-        position of the range (exclusive).
+        Parses a range header into a list of two-tuples (start, stop) where
+        `start` is the starting byte of the range (inclusive) and
+        `stop` is the ending byte position of the range (exclusive).
 
         Args:
             header (str): The HTTP_RANGE request header.
@@ -95,6 +95,7 @@ class RangedFileResponse(FileResponse):
     the response, so browsers that request the file, can stream the response
     properly.
     """
+
     def __init__(self, request, file, *args, **kwargs):
         """
         RangedFileResponse constructor also requires a request, which
@@ -105,7 +106,9 @@ class RangedFileResponse(FileResponse):
             file (File): A file-like object.
         """
         self.ranged_file = RangedFileReader(file)
-        super(RangedFileResponse, self).__init__(self.ranged_file, *args, **kwargs)
+        super(RangedFileResponse, self).__init__(
+            self.ranged_file, *args, **kwargs
+        )
 
         if 'HTTP_RANGE' in request.META:
             self.add_range_headers(request.META['HTTP_RANGE'])
