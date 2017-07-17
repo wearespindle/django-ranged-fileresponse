@@ -1,26 +1,42 @@
 import io
 
-import django
-from django.conf import settings
 from django.test.client import RequestFactory
 from django.test.testcases import TestCase
 
 from ranged_fileresponse import RangedFileResponse
 
 
-settings.configure( DEBUG=True)
-django.setup()
-
 class testResponse(TestCase):
 
     def setUp(self):
         self.factory = RequestFactory()
 
-    def test_ok(self):
+    def test_begin(self):
         request = self.factory.get(
-            '/customer/details', HTTP_RANGE='bytes=512-1023'
+            '/path', HTTP_RANGE='bytes=0-3'
         )
         回應 = RangedFileResponse(
-            request, io.BytesIO(b'sui2' * 512), content_type='audio/wav'
+            request, io.BytesIO(b'sui2khiau2tsiang5'), content_type='audio/wav'
         )
-        self.assertEqual(回應.body, b'sui2' * 128)
+        self.assertContent(回應, b'sui2')
+
+    def test_middle(self):
+        request = self.factory.get(
+            '/path', HTTP_RANGE='bytes=4-9'
+        )
+        回應 = RangedFileResponse(
+            request, io.BytesIO(b'sui2khiau2tsiang5'), content_type='audio/wav'
+        )
+        self.assertContent(回應, b'khiau2')
+
+    def test_end(self):
+        request = self.factory.get(
+            '/path', HTTP_RANGE='bytes=10-16'
+        )
+        回應 = RangedFileResponse(
+            request, io.BytesIO(b'sui2khiau2tsiang5'), content_type='audio/wav'
+        )
+        self.assertContent(回應, b'tsiang5')
+
+    def assertContent(self, response, except_response):
+        self.assertEqual(list(response.streaming_content)[0], except_response)
