@@ -7,4 +7,3 @@ settings.configure(DATABASES={
         'NAME': 'db.sqlite3',
     }
 })
-# django.setup()
