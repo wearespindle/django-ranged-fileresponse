@@ -9,10 +9,13 @@ env:
 - TOX_ENV=flake8
 install:
 - pip install tox
+- pip install python-coveralls
 branches:
   only:
   - master
   - /\d+\.\d+\.\d+/
 script:
 - tox -e $TOX_ENV
-
+after_success:
+- coverage report
+- coveralls
