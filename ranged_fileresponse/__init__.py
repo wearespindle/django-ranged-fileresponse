@@ -41,7 +41,7 @@ class RangedFileReader(object):
     def parse_range_header(self, header, resource_size):
         """
         Parses a range header into a list of two-tuples (start, stop) where
-        `start` is the starting byte of the range (inclusive) and 
+        `start` is the starting byte of the range (inclusive) and
         `stop` is the ending byte position of the range (exclusive).
 
         Args:
