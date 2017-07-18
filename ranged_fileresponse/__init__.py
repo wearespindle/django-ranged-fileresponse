@@ -1,4 +1,4 @@
-from django.http.response import FileResponse, HttpResponse
+from django.http.response import FileResponse
 
 
 class RangedFileReader(object):
@@ -132,9 +132,12 @@ class RangedFileResponse(FileResponse):
         # multipart byteranges).
         if ranges is not None and len(ranges) == 1:
             start, stop = ranges[0]
-            if stop > size:
+            if start >= size:
                 # Requested range not satisfiable.
-                return HttpResponse(status=416)
+                self.status_code = 416
+                return
+            if stop >= size:
+                stop = size
             self.ranged_file.start = start
             self.ranged_file.stop = stop
             self['Content-Range'] = 'bytes %d-%d/%d' % (start, stop - 1, size)
