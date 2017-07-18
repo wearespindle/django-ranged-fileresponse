@@ -132,10 +132,12 @@ class RangedFileResponse(FileResponse):
         # multipart byteranges).
         if ranges is not None and len(ranges) == 1:
             start, stop = ranges[0]
-            if stop > size:
-                # Requested range not satisfiable
+            if start > size:
+                # Requested range not satisfiable.
                 self.status_code = 416
                 return
+            if stop > size:
+                stop = size
             self.ranged_file.start = start
             self.ranged_file.stop = stop
             self['Content-Range'] = 'bytes %d-%d/%d' % (start, stop - 1, size)
