@@ -1,4 +1,4 @@
-from django.http.response import FileResponse, HttpResponse
+from django.http.response import FileResponse
 
 
 class RangedFileReader(object):
