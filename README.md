@@ -1,4 +1,8 @@
-# About
+# Django Ranged File Response
+[![Build Status](https://travis-ci.org/i3thuan5/django-ranged-fileresponse.svg?branch=master)](https://travis-ci.org/i3thuan5/django-ranged-fileresponse)
+[![Coverage Status](https://coveralls.io/repos/github/i3thuan5/django-ranged-fileresponse/badge.svg?branch=master)](https://coveralls.io/github/i3thuan5/django-ranged-fileresponse?branch=master)
+
+## About
 If you're in the situation that you have an authenticated Django view that returns
 files for download, you may have noticed that Safari 9.x doesn't play audio files
 properly when returning audio-files. The reason is that Safari sends a HTTP_RANGE request header and expects a proper `Content-Range` response header in return.
