@@ -54,7 +54,16 @@ class testResponse(TestCase):
         回應 = RangedFileResponse(
             request, io.BytesIO(b'sui2khiau2tsiang5'), content_type='audio/wav'
         )
-        self.assertContent(回應, 'khiau2')
+        self.assertContent(回應, b'tsiang5')
+
+    def test_more_one_char(self):
+        request = self.factory.get(
+            '/path', HTTP_RANGE='bytes=10-17'
+        )
+        回應 = RangedFileResponse(
+            request, io.BytesIO(b'sui2khiau2tsiang5'), content_type='audio/wav'
+        )
+        self.assertContent(回應, b'tsiang5')
 
     def assertContent(self, response, except_response):
         self.assertEqual(list(response.streaming_content)[0], except_response)
