@@ -1,4 +1,4 @@
-from django.http.response import FileResponse, HttpResponse
+from django.http.response import FileResponse
 
 
 class RangedFileReader(object):
@@ -40,9 +40,9 @@ class RangedFileReader(object):
 
     def parse_range_header(self, header, resource_size):
         """
-        Parses a range header into a list of two-tuples (start, stop) where `start`
-        is the starting byte of the range (inclusive) and `stop` is the ending byte
-        position of the range (exclusive).
+        Parses a range header into a list of two-tuples (start, stop) where
+        `start` is the starting byte of the range (inclusive) and
+        `stop` is the ending byte position of the range (exclusive).
 
         Args:
             header (str): The HTTP_RANGE request header.
@@ -95,6 +95,7 @@ class RangedFileResponse(FileResponse):
     the response, so browsers that request the file, can stream the response
     properly.
     """
+
     def __init__(self, request, file, *args, **kwargs):
         """
         RangedFileResponse constructor also requires a request, which
@@ -129,9 +130,14 @@ class RangedFileResponse(FileResponse):
         # multipart byteranges).
         if ranges is not None and len(ranges) == 1:
             start, stop = ranges[0]
-            if stop > size:
+            if start >= size:
                 # Requested range not satisfiable.
-                return HttpResponse(status=416)
+                self.status_code = 416
+                return
+
+            if stop >= size:
+                stop = size
+
             self.ranged_file.start = start
             self.ranged_file.stop = stop
             self['Content-Range'] = 'bytes %d-%d/%d' % (start, stop - 1, size)
