@@ -107,6 +107,9 @@ class RangedFileResponse(FileResponse):
         """
         self.ranged_file = RangedFileReader(file)
         super(RangedFileResponse, self).__init__(self.ranged_file, *args, **kwargs)
+        # Close file object at end of request
+        if hasattr(file, 'close') and hasattr(self, '_closable_objects'):
+            self._closable_objects.append(file)
 
         if 'HTTP_RANGE' in request.META:
             self.add_range_headers(request.META['HTTP_RANGE'])
