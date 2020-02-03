@@ -19,7 +19,6 @@ class RangedFileReader(object):
             block_size (Optional[int]): The block_size to read with.
         """
         self.f = file_like
-        
         # If size property available (ie: Django File, FieldFile, etc) and not zero (if zero, double-check anyway)
         if hasattr(self.f, 'size') and self.f.size > 0:
             self.size = self.f.size
@@ -98,12 +97,13 @@ class RangedFileReader(object):
         if hasattr(self.f, 'close'):
             self.f.close()
 
+
 class RangedFileResponse(FileResponse):
     """
     This is a modified FileResponse that returns `Content-Range` headers with
     the response, so browsers that request the file, can stream the response
     properly.
-    
+
     Note: When using RangedFileResponse with django tests, make sure to read the response.streaming_content after the
     request, otherwise the underlying file won't be auto-closed.
     """
