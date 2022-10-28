@@ -1,6 +1,12 @@
 from django.http.response import FileResponse
 
 
+def _sizeof(file):
+    if hasattr(file, 'size'):
+        return file.size
+    return len(file.read())
+
+
 class RangedFileReader(object):
     """
     Wraps a file like object with an iterator that runs over part (or all) of
@@ -19,7 +25,7 @@ class RangedFileReader(object):
             block_size (Optional[int]): The block_size to read with.
         """
         self.f = file_like
-        self.size = len(self.f.read())
+        self.size = _sizeof(self.f)
         self.block_size = block_size or RangedFileReader.block_size
         self.start = start
         self.stop = stop
